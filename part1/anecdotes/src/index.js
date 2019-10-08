@@ -13,21 +13,52 @@ const Button = (props) => (
   </button>
 )
 
-const App = (props) => {
-  const [selected, setSelected] = useState(0)
+const Votes = (props) => (
+  <div>
+    <p> has {props.points} votes </p>
+  </div>
+)
 
-  const totalAnecdotes = anecdotes.lenght
-  const newSelection = randomAnecdotes => {
-    let random = Math.random()
-    let randomIndex = Math.floor(random * totalAnecdotes)
-    randomAnecdotes = anecdotes[randomIndex]
-    return selected(randomAnecdotes)
+const App = (props) => {
+  const newArray = Array(totalAnecdotes).fill(0)
+
+  const [selected, setSelected] = useState(0)
+  const [points, setPoints] = useState(newArray)
+  const [top, setTop] = useState(0)
+
+  const random = Math.random()
+  const randomIndex = Math.floor(random * totalAnecdotes)
+  const newSelection = () => setSelected(randomIndex)
+
+  const upVote = (selected) => {
+    copy[selected] += 1
+    setPoints(copy[selected])
+    console.log(copy)
+    setToTop(copy)
+  }
+
+
+  const setToTop = (copy) => {
+    let maximo = topIndex(copy)
+    setTop(maximo)
+  }
+
+  const topIndex = (arr) => {
+    let i = arr.indexOf(Math.max(...arr))
+    return i
+    console.log(i)
   }
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <Anecdote anecdote={anecdotes[selected]} />
-      <Button handleClick={() => newSelection} text="next anecdote" />
+      <Votes points={copy[selected]} />
+      <Button handleClick={() => upVote(selected)} text="vote" />
+      <Button handleClick={() => newSelection(randomIndex)} text="next anecdote" />
+      <h1>Anecdote with most votes</h1>
+      <Anecdote anecdote={anecdotes[top]} />
+      <Votes points={copy[top]} />
     </div>
   )
 }
@@ -40,6 +71,10 @@ const anecdotes = [
   'Premature optimization is the root of all evil.',
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
 ]
+const totalAnecdotes = anecdotes.length
+const points = Array(totalAnecdotes).fill(0)
+const copy = [...points]
+
 
 ReactDOM.render(
   <App anecdotes={anecdotes} />,
