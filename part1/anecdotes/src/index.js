@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 
 const Anecdote = (props) => (
   <div>
-  {props.anecdote}
+    {props.anecdote}
   </div>
 )
 
@@ -33,7 +33,6 @@ const App = (props) => {
   const upVote = (selected) => {
     copy[selected] += 1
     setPoints(copy[selected])
-    console.log(copy)
     setToTop(copy)
   }
 
